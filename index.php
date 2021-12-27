@@ -1,3 +1,2 @@
 <html>
-    hello world
 </html>
