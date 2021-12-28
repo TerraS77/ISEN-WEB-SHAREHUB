@@ -1,0 +1,8 @@
+{
+    "bdd":{
+        "host":"localhost",
+        "database":"smartHub",
+        "user":"root",
+        "password":""
+    }
+}

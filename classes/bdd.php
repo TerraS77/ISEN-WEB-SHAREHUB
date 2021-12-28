@@ -1,13 +1,9 @@
 <?php
 
-class bdd{
-    static public $DBH;
-    function __construct($host, $dbname, $user, $pass){
-        $this->dbh = new PDO(`mysql:host=$host;dbname=$dbname`, $user, $pass);
-    }
-    function getPDO(){
-        return $this->dbh;
-    }
+function getBddPDO(){
+    $bddData = json_decode(file_get_contents("../config.json"), true)["bdd"];
+    $dbh = new PDO(`mysql:host=`.$bddData["host"].`;dbname=`.$bddData["database"], $bddData["user"], $bddData["password"]);
+    return $dbh;
 }
 
 ?>
