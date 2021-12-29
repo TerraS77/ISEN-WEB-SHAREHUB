@@ -1,0 +1,16 @@
+.copyright {
+    position: fixed;
+    right: 0;
+    bottom: 10;
+    left: 10;
+    z-index: 1030;
+
+}
+
+.container{
+    display: flex;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 2%;
+  justify-content: center;
+}
