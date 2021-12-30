@@ -24,13 +24,15 @@ class cardManager{
     function __construct($parentId)
     {
         $this->parentId = $parentId;
-        $dbh = getBddPDO();
-        $cards = $dbh->query(`SELECT * FROM cards WHERE idHubParent = $parentId`);
-        $this->$cards = array();
-        foreach($cards as $row) $this->addCard($row);
+        try{
+            $dbh = getBddPDO();
+            $cards = $dbh->query(`SELECT * FROM cards WHERE idHubParent = $parentId`);
+            $this->$cards = array();
+            foreach($cards as $row) $this->addCard($row);
+        } catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
     }
-
-    //MUST UPDATE INDEXES
 
     function addCard($cardData){
         $card = new card($this->parentId, intval($cardData['index']), $cardData['id'], $cardData['name'], $cardData['url'], $cardData['mediaUrl']);
@@ -40,6 +42,8 @@ class cardManager{
         $this->addCard($cardData);
         $dbh = getBddPDO();
     }
+
+    //MUST UPDATE INDEXES
     function removeCard(){
 
     }
@@ -50,17 +54,20 @@ class cardManager{
 }
 
 class card{
+    public $id;
     public $parentId;
     public $index;
-    public $id;
     public $name;
     public $url;
     public $imageUrl;
     function __construct($parentId, $index, $id, $name, $url, $imageUrl)
     {
-        $name = $data->name;
-        $desc = $data->desc;
-        $userId = $data->id;
+        $this->parentId = $parentId;
+        $this->index = $index;
+        $this->id = $id;
+        $this->name = $name;
+        $this->url = $url;
+        $this->imageUrl = $imageUrl;
     }
 }
 
