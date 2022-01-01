@@ -69,7 +69,7 @@ class cardManager{
             echo $e->getMessage()."<br/>";
         }
     }
-    function addCard($cardData){
+    private function addCard($cardData){
         $card = new card(
             $this->parentId, 
             intval($cardData['Index']), 
@@ -98,12 +98,14 @@ class cardManager{
 
     //MUST UPDATE INDEXES
     function removeCard($index){
+        $index;
     }
 
     function getCards($from, $to){
         $result = array();
         for($i = $from; $i <= $to; $i++){
-            $result[$i] = $this->cards[$i];
+            if(isset($this->cards[$i])) if($this->cards[$i])
+                $result[$i] = $this->cards[$i];
         }
         return $result;
     }
