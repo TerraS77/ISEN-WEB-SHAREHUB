@@ -3,7 +3,6 @@
 function getBddPDO(){
     try{
         $bddData = json_decode(file_get_contents("../config.json"), true)["bdd"];
-        var_dump($bddData);
         $dbh = new PDO('mysql:host='.$bddData["host"].';dbname='.$bddData["database"], $bddData["user"], $bddData["password"]);
         return $dbh;
     } catch( PDOException $e){
@@ -15,13 +14,13 @@ function getBddPDO(){
 try{
     $dbh = getBddPDO();
     $dbh->query("
-        CREATE TABLE IF NOT EXISTS `User`(
+        CREATE TABLE IF NOT EXISTS `Users`(
             `IdUser` int AUTO_INCREMENT PRIMARY KEY,
             `mail` VARCHAR(100) character set utf8 NOT NULL,
             `password` VARCHAR(200) character set utf8 NOT NULL
         );
         
-        CREATE TABLE IF NOT EXISTS `Hub`(
+        CREATE TABLE IF NOT EXISTS `Hubs`(
             IdHub int AUTO_INCREMENT PRIMARY KEY,
             LibHub VARCHAR(50) character set utf8,
             DescHub VARCHAR(500) character set utf8,
@@ -29,16 +28,17 @@ try{
             FOREIGN KEY (IdUser) REFERENCES User(IdUser)
         );
         
-        CREATE TABLE IF NOT EXISTS `Card`(
+        CREATE TABLE IF NOT EXISTS `Cards`(
             IdCard bigint AUTO_INCREMENT PRIMARY KEY,
             `Index` INT NOT NULL,
-            lib VARCHAR(100) character set utf8 NOT NULL,
-            url VARCHAR(500) character set utf8 NOT NULL,
-            imageUrl VARCHAR(500) character set utf8 NULL,
+            lib VARCHAR(100) character set utf8 NULL,
+            url VARCHAR(500) character set utf8 NULL,
+            imageUrl VARCHAR(500) character set utf8 NOT NULL,
             IdHub INT NOT NULL,
-            FOREIGN KEY (IdHub) REFERENCES Hub(IdHub) 
+            FOREIGN KEY (IdHub) REFERENCES Hub(IdHub)
         );
     ");
+    $dbh = null;
 } catch( PDOException $e){
     echo $e->getMessage()."<br/>";
 }
