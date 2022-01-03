@@ -1,0 +1,8 @@
+{
+    "bdd":{
+        "host":"localhost",
+        "database":"sharehub",
+        "user":"root",
+        "password":""
+    }
+}
