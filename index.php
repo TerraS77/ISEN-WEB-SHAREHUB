@@ -46,7 +46,7 @@
     </nav>
   </header>
 
-  <div class="container">
+  <div class="container" id="contain">
     <div class="row">
       <div class="col">
         <div class="card">
@@ -74,9 +74,46 @@
 
 
 <script>
-var Lscreen=window.innerWidth;
-var NbCard = (int) (Lscreen/255)
-alert(Lscreen);
-//1280
+
+
+
+function getNbCols(){
+  var Lscreen=window.innerWidth;
+  var NbCard =  Math.floor(Lscreen/255);
+  
+  return NbCard;
+}
+
+function createCol(){
+  var NbCols = getNbCols();
+  var x = document.getElementById("contain");
+for (k=0;k<1;k++){
+  
+x.innerHTML = `<div class='row' id="rowss"></div>`;
+var y = document.getElementById("rowss");
+for(i= 0; i<NbCols; i++){
+  
+y.innerHTML = y.innerHTML+`
+      <div class='col'>
+        <div class='card'>
+          <img class='card-img-top' src='...' alt='Card image cap'>
+          <div class='card-body'>
+            <h5 class='card-title'>Card title that wraps to a new line</h5>
+            <p class='card-text'>This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          </div>
+        </div>
+      </div>
+     
+  `;
+}
+
+}
+
+
+}
+
+
+window.onload = createCol;
+window.onresize = createCol;
 
 </script>

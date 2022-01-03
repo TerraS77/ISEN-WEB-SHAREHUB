@@ -2,6 +2,8 @@
 
 <head>
     <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="js/bootstrap.bundle.min.js"></script>
+    
 </head>
 
 <body>
@@ -9,131 +11,187 @@
     <div class=" row align-items-cente"></div>
 
     <div class="container-sm col-4 text-center pt-5 pb-5">
-        <h1>UNTILTED</h1>
-        <h3>shareHub</h3>
-    </div>
-    <div id="loginform" class="container-sm col-4 border border-dark  " style=" border-radius:40px;" >
-        <h3 class="text-center text-black pt-3">Login form</h3>
 
-        <form method="post" class="mb-3">
-            <div class="form-outline mb-4 ">
-                <label for="exampleFormControlInput1" class="form-label">name</label>
-                <input type="text" class="form-control" id="name" placeholder="your name here">
-            </div>
-            <div class="form-outline mb-4">
-                <label for="exampleFormControlInput1" class="form-label">password</label>
-                <input type="text" class="form-control" id="pass" placeholder="your password here">
-            </div>
+        <?php
 
-            <div class="d-flex justify-content-between align-items-center">
-                    <input type="submit" class="btn btn-primary" id="login" type="submit" value="Login"></input>
-                    <p><button onclick="window.location.href='./ex3inscription.php'" class="btn btn-primary">sign in</button></p>
-            </div>
-       
-        </form>
+        
+        
+        
+        if($_POST){
+        if(isset($_GET['hid']) && $_GET['hid']!="" ){
+            $hub=new hub ($_GET['hid']);
+            $hubname=$hub->name;
+            echo "<h1>ShareHub</h1> <br> <h3>$hubname</h3>";
+        }else {
+            echo "<h1>ShareHub</h1>";
+        }
+    }else {
+        echo "<h1>ShareHub</h1>";
+    }
+    ?>
     </div>
-    </div>
+    <?php
+
+
+
+    $isSign=false;
+    if($_GET){
+        if(isset($_GET['s'])){
+            if($_GET['s']!=""){
+                
+               
+               if($_GET['s']=="sg"){
+                   $isSign=true;
+                   ?>
+                   <div id="loginform" class="container-sm col-4 border border-dark  " style=" border-radius:40px; ">
+    <h3 class="text-center text-black pt-3">sign in form</h3>
+
+    <form method="post" action="login.php?s=sg" class="mb-3" onsubmit="return verif_password()">
+        <div class="form-outline mb-4 ">
+            <label for="exampleFormControlInput1" class="form-label">mail</label>
+            <input type="text" class="form-control" id="SGmail" placeholder="toto@tata.com">
+        </div>
+        <div class="form-outline mb-4">
+            <label for="exampleFormControlInput1" class="form-label">password</label>
+            <input type="password" class="form-control" id="SGpass" required onblur="verif_password()" placeholder="your password here">
+        </div>
+        <div class="form-outline mb-4">
+            <label for="exampleFormControlInput1" class="form-label">confirmation</label>
+            <input type="password" class="form-control" id="SGpass2" required onblur="verif_password()" placeholder="confirm your password">
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+        <p><button onclick="window.location.href='login.php?s=lg'" type="button" class="btn btn-outline-primary">log in</button></p>
+            <input type="submit" class="btn btn-primary" id="login" type="submit" value="sign in"></input>
+            
+        </div>
+
+    </form>
+
+</div>
+                <?php
+               }
+               
+            }
+
+        }
+    }if(!$isSign){
+?>
+  <div id="loginform" class="container-sm col-4 border border-dark  " style=" border-radius:40px;">
+                    <h3 class="text-center text-black pt-3">Login form</h3>
+            
+                    <form method="post" class="mb-3">
+                        <div class="form-outline mb-4 ">
+                            <label for="exampleFormControlInput1" class="form-label">mail</label>
+                            <input type="text" class="form-control" id="LGmail" placeholder="toto@tata.com">
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label for="exampleFormControlInput1" class="form-label">password</label>
+                            <input type="text" class="form-control" id="LGpass" placeholder="your password here">
+                        </div>
+            
+                        <div class="d-flex justify-content-between align-items-center">
+                        <p><button onclick="window.location.href='login.php?s=sg'" type="button" class="btn btn-outline-primary">sign in</button></p>
+                            <input type="submit" class="btn btn-primary" id="login" type="submit" value="Login"></input>
+                            
+                        </div>
+            
+                    </form>
+                </div>
+                </div>
+                
+<?php
+
+    }
+        
+    ?>
+   </div>
+               
 </body>
 
 <?php
-$user = 'root';
-$pass = '';
-$bdd = new PDO('mysql:host=localhost;dbname=tp2', $user, $pass);
+require_once("./classes/user.php");
+
+
 
 
 // Code PHP Formulaire Connexion
 if ($_POST) {
-    if (isset($_POST['name']) && isset($_POST['pass'])) {
-        if ($_POST['name'] != "" && $_POST['pass'] != "") {
+    if (isset($_POST['LGmail']) && isset($_POST['LGpass'])) {
+        if ($_POST['LGmail'] != "" && $_POST['LGpass'] != "") {
             // authentification 
-            $verif = verif_login($_POST['name'], $_POST['pass']);
-            if ($verif == true) {
-                $_SESSION["name"] = $_POST['name'];
-                // header('Location: index.php');
+            if (user::login($_POST['LGmail'], $_POST['LGpass'])) {
                 echo "CONNECTED!!!!!";
-            } else $error .= "<p>Erreur lors de la connexion !</p>"; echo "BRUH";
-        }
+                // header('Location: index.php');
+            } else echo "FUUUUUCK";
+        } else $error .= "<p>Erreur lors de la connexion !</p>";
+        
     }
 }
 
 
 
 
+ ?>
+                
+
+
+<!-- PARTI REGISTER AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -->
+<!-- <div class="container-sm col-4 text-center pt-5 pb-5">
+    <h1>UNTILTED</h1>
+    <h3>shareHub</h3>
+</div> -->
 
 
 
 
 
+<?php
+// code PHP REGISTER
+var_dump($_POST);
+if ($_POST) {
+    if (isset($_POST['SGmail']) && isset($_POST['SGpass']) && isset($_POST['SGpass2'])) {
+        if ($_POST['SGmail'] != "" && $_POST['SGpass'] != ""  && $_POST['SGpass2'] != "") {
+            if ($_POST['SGpass'] == $_POST['SGpass2']) {
+                // authentification 
 
-function verif_login($username, $password)
-{
-    try {
-        if (!$password || !$username) {
-            return false;
-        } else {
+                user::createUser(array("mail" => $_POST['SGmail'], "password" => $_POST['SGpass']));
+                echo "REGISTERED!!!!!";
 
-            $stmt = $GLOBALS["bdd"]->prepare("SELECT * FROM user WHERE name=:name AND password=:password");
-            $stmt->bindParam(":name", $username);
-            $stmt->bindParam(":password", $password);
+                // header('Location: login.php');
+
+            } else $error .= "<p>Erreur lors de la connexion !</p>";
+           
         }
-        $stmt->execute();
-        if ($stmt->rowCount() >= 1) return true;
-        else return false;
-    } catch (PDOException $e) {
-        print "Erreur !: " . $e->getMessage() . "<br/>";
-    } finally {
-        $stmt = null;
+      
     }
+   
 }
-
-
-
-
-
-
-
 
 
 ?>
-<!-- PARTI REGISTER AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -->
-<div class="container-sm col-4 text-center pt-5 pb-5">
-        <h1>UNTILTED</h1>
-        <h3>shareHub</h3>
-    </div>
-<div id="loginform" class="container-sm col-4 border border-dark  " style=" border-radius:40px;" >
-        <h3 class="text-center text-black pt-3">sign in form</h3>
 
-<form method="post" class="mb-3" onsubmit="return verif_password()">
-            <div class="form-outline mb-4 ">
-                <label for="exampleFormControlInput1" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="your name here">
-            </div>
-            <div class="form-outline mb-4">
-                <label for="exampleFormControlInput1" class="form-label">password</label>
-                <input type="password" class="form-control" id="pass" required onblur="verif_password()" placeholder="your password here">
-            </div>
-            <div class="form-outline mb-4">
-                <label for="exampleFormControlInput1" class="form-label">confirmation</label>
-                <input type="password" class="form-control" id="pass2"  required onblur="verif_password()"placeholder="confirm your password">
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center">
-                    <input type="submit" class="btn btn-primary" id="login" type="submit" value="sign in "></input>
-                    <p><button onclick="window.location.href='login.php'" class="btn btn-primary">log in</button></p>
-            </div>
-       
-        </form>
-
-</div>
-
-
-
-
+<script type="text/javascript">
+    // Vérification Mot de Passe
+    function verif_password() {
+        let passTab = [];
+        passTab.push(document.getElementById('pass'));
+        passTab.push(document.getElementById('pass2'));
+        if (passTab[0].value == passTab[1].value && passTab[0].value == "") { // champs vides
+            passTab[0].style.border = "solid black 1px";
+            passTab[1].style.border = "solid black 1px";
+            return false;
+        } else if (passTab[0].value != passTab[1].value) { // champs different
+            passTab[0].style.border = "solid black 1px";
+            passTab[1].style.border = "solid red 1px";
+            return false;
+        } else if (passTab[0].value == passTab[1].value && passTab[0].value != "") { // champs egaux
+            passTab[0].style.border = "solid green 1px";
+            passTab[1].style.border = "solid green 1px";
+            return true;
+        }
+    }
+</script>
 
 
 </html>
-
-
-
-      
-      

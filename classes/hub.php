@@ -5,8 +5,8 @@ require_once('user.php');
 // $hub = hub::createHub(array("LibHub" => "Test", "DescHub" => "newTest", "IdUser" => 1));
 // $hub->cards->createCard(array("index" => 0, "lib" => "News", "imageUrl" => "https://www.isen-mediterranee.fr/global/upload/news/normal/2568.jpg"));
 
-$hub = new hub(15);
-var_dump($hub->cards->getCards(0, 0));
+// $hub = new hub(15);
+// var_dump($hub->cards->getCards(0, 0));
 
 class hub{
     public $id;
@@ -81,24 +81,44 @@ class cardManager{
         $this->cards[$card->index] = $card;
     }
     function createCard($cardData){
-        $dbh = getBddPDO();
-        $request = $dbh->prepare('INSERT INTO cards (`index`, `lib`, `url`, `imageUrl`, `IdHub`) VALUES (:index, :lib, :url, :imageUrl, :IdHub);');
-        $request->bindValue(':index', intval($cardData['index']));
-        if(isset($cardData['lib'])) $request->bindValue(':lib', $cardData['lib']);
-        else $request->bindValue(':lib', null);
-        if(isset($cardData['url'])) $request->bindValue(':url', $cardData['url']);
-        else $request->bindValue(':url', null);
-        $request->bindValue(':imageUrl', $cardData['imageUrl']);
-        $request->bindValue(':IdHub', $this->parentId);
-        $request->execute();
-        $cardData["IdCard"] = intval($dbh->query('SELECT LAST_INSERT_ID()')->fetch()[0]);
-        $dbh = null;
-        $this->addCard($cardData);
+        try{
+            $dbh = getBddPDO();
+            $request = $dbh->prepare('INSERT INTO cards (`index`, `lib`, `url`, `imageUrl`, `IdHub`) VALUES (:index, :lib, :url, :imageUrl, :IdHub);');
+            $request->bindValue(':index', intval($cardData['index']));
+            if(isset($cardData['lib'])) $request->bindValue(':lib', $cardData['lib']);
+            else $request->bindValue(':lib', null);
+            if(isset($cardData['url'])) $request->bindValue(':url', $cardData['url']);
+            else $request->bindValue(':url', null);
+            $request->bindValue(':imageUrl', $cardData['imageUrl']);
+            $request->bindValue(':IdHub', $this->parentId);
+            $request->execute();
+            $cardData["IdCard"] = intval($dbh->query('SELECT LAST_INSERT_ID()')->fetch()[0]);
+            $dbh = null;
+            $this->addCard($cardData);
+        }catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
     }
 
     //MUST UPDATE INDEXES
     function removeCard($index){
-        $index;
+        try{
+            $dbh = getBddPDO();
+            foreach($this->cards as $card){
+                if($card->index = $index) {
+                    $dbh->query('DELETE FROM `cards` WHERE IdCard = '.$card->id);
+                } else if($card->index > $index) {
+                    $card->index--;
+                    $dbh->query('UPDATE cards SET index = '.$card->index.' WHERE IdCard = '.$card->id);
+                }
+            }
+            $index;
+            $cards = $dbh->query('SELECT * FROM cards WHERE IdHub = '.$this->parentId)->fetchAll();
+            $this->cards = array();
+            if($cards) foreach($cards as $row) $this->addCard($row);
+        }catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
     }
 
     function getCards($from, $to){
@@ -118,8 +138,7 @@ class card{
     public $name;
     public $url;
     public $imageUrl;
-    function __construct($parentId, $index, $id, $name, $url, $imageUrl)
-    {
+    function __construct($parentId, $index, $id, $name, $url, $imageUrl) {
         $this->parentId = $parentId;
         $this->index = $index;
         $this->id = $id;
