@@ -8,21 +8,27 @@
 
 <body>
     <script language="JavaScript">
-        function createInstance() {
+        function createInstance()
+        {
             var req = null;
-            if (window.XMLHttpRequest) {
+            if (window.XMLHttpRequest)
+            {
                 req = new XMLHttpRequest();
-            } else if (window.ActiveXObject) {
+            } 
+            else if (window.ActiveXObject) 
+            {
                 try {
-                    req = new ActiveXObject("Msxml2.XMLHTTP");
-                } catch (e) {
+                    req = new ActiveXObject("Msxml2.XMLHTTP.6.0");
+                } catch (e)
+                {
                     try {
                         req = new ActiveXObject("Microsoft.XMLHTTP");
-                    } catch (e) {
+                    } catch (e) 
+                    {
                         alert("XHR not created");
                     }
                 }
-            }
+                }
             return req;
         };
     </script>
@@ -65,7 +71,7 @@
                     <div id="loginform" class="container-sm col-4 border border-dark  " style=" border-radius:40px; ">
                         <h3 class="text-center text-black pt-3">sign in form</h3>
 
-                        <form method="post" id="formSG" class="mb-3" onsubmit="submitFormSG();">
+                        <form method="post" id="formSG" class="mb-3" onsubmit="return submitFormSG();">
                             <span id="errorsSpanSG"></span>
                             <div class="form-outline mb-4 ">
                                 <label for="exampleFormControlInput1" class="form-label">mail</label>
@@ -82,7 +88,7 @@
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <p><button onclick="window.location.href='login.php?s=lg'" type="button" class="btn btn-outline-primary">log in</button></p>
-                                <input type="submit" class="btn btn-primary" id="login" type="submit" value="sign in"></input>
+                                <input type="submit" class="btn btn-primary" id="signin" value="sign in"></input>
 
                             </div>
                         </form>
@@ -110,10 +116,6 @@
 
                         // commande ajax
 
-
-
-
-
                         function submitFormSG() {
                             if (verif_password()) {
                                 var req = createInstance();
@@ -121,29 +123,18 @@
                                 req.onreadystatechange = function() {
                                     if (req.readyState == 4) {
                                         if (req.status == 200) {
+                                            console.log(req.responseText);
                                             if (req.responseText == 'true') {
-
-                                                // user::createUser(array("mail" => $_POST['SGmail'], "password" => $_POST['SGpass']));
-                                                // // header('Location: login.php?s=lg');
-                                                // echo "YOUHOUUUUU";
-                                                document.getElementById("formSG").submit();
+                                                alert(document.getElementById("formSG").submit());
                                             }
-
-                                        } else {
-                                            document.getElementById("errorsSpanSG").innerHTML = "Il y a eu une erreur! < br > "
                                         }
-                                    } else {
-                                        alert("Error: returned status code " + req.status + " " + req.statusText);
                                     }
                                 }
                                 req.open("POST", "login-ajax.php", true);
                                 req.setRequestHeader("Content-type", "application/x-www-formurlencoded");
-                                req.send("SGmail=" + form.SGmail.value + "&SGpass=" + form.SGpass.value);
+                                req.send("SGmail=" + document.getElementById("formSG").SGmail.value + "&SGpass=" + document.getElementById("formSG").SGpass.value);
+                                console.log(req);
                             }
-
-                            // req.open("GET", "ajax-get.php", true);
-                            // req.send(null);
-                            alert("send");
                             return false;
                         }
                     </script>
@@ -185,8 +176,7 @@
                 };
                 xhr.open("POST", "login-ajax.php", true);
                 xhr.setRequestHeader("Content-type", "application/x-www-formurlencoded");
-                xhr.send("LGmail=" + form.LGmail.value + "&LGpass=" +
-                    form.LGpass.value);
+                xhr.send("LGmail=" + form.LGmail.value + "&LGpass=" + form.LGpass.value);
                 return false;
             }
         </script>
@@ -203,6 +193,37 @@
 <!-- user::createUser(array("mail" => $_POST['SGmail'], "password" => $_POST['SGpass'])); -->
 
 
+<?php
+require_once("classes/user.php");
+// Code PHP Formulaire Connexion
+if ($_POST) {
+    if (isset($_POST['LGmail']) && isset($_POST['LGpass'])) {
+        if ($_POST['LGmail'] != "" && $_POST['LGpass'] != "") {
+            // authentification 
+            if (user::login($_POST['LGmail'], $_POST['LGpass'])) {
+               header('Location: index.php');
+              
+            } 
+        } else echo 'error login';
+    }
+}
+
+// code PHP REGISTER
+if ($_POST) {
+    if (isset($_POST['SGmail']) && isset($_POST['SGpass']) && isset($_POST['SGpass2'])) {
+        if ($_POST['SGmail'] != "" && $_POST['SGpass'] != ""  && $_POST['SGpass2'] != "") {
+            if ($_POST['SGpass'] == $_POST['SGpass2'] && !user::doesUserExist($_POST['SGmail'])) {
+                // authentification 
+                user::createUser(array("mail" => $_POST['SGmail'], "password" => $_POST['SGpass']));
+               header('Location: login.php');
+
+          
+            }
+            else  echo 'error register';
+        }
+    }
+}
+?>
 
 
 </html>
