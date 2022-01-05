@@ -40,6 +40,21 @@ class user{
         }
     }
 
+    static function doesUserExist($mail){
+        try{
+            $dbh = getBddPDO();
+            $request = $dbh->prepare('SELECT * FROM users WHERE `mail` = :mail');
+            $request->bindValue(':mail', $mail);
+            $request->execute();
+            $data = $request->fetch();
+            $dbh = null;
+            if($data) return true;
+            else return false;
+        }catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
+    }
+
     function __construct($id)
     {
         try{
