@@ -1,6 +1,7 @@
 <?php
 
 require_once('bdd.php');
+require_once('hub.php');
 
 class user{
     public $id;
@@ -66,6 +67,22 @@ class user{
             $this->id = $data["IdUser"];
             $this->mail = $data['mail'];
             $this->password = $data['password'];
+        }catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
+    }
+
+    function getHub(){
+        try{
+            $dbh = getBddPDO();
+            $request = $dbh->prepare('SELECT IdHub FROM hubs WHERE `IdUser` = :IdUser');
+            $request->bindValue(':IdUser', $this->id);
+            $request->execute();
+            $data = $request->fetch();
+            if($data)
+                return new hub($data["IdHub"]);
+            else
+                return false;
         }catch( PDOException $e){
             echo $e->getMessage()."<br/>";
         }
