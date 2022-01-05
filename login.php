@@ -2,37 +2,11 @@
 
 <head>
     <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="js/bootstrap.bundle.min.js"></script> -->
 
 </head>
 
 <body>
-    <script language="JavaScript">
-        function createInstance()
-        {
-            var req = null;
-            if (window.XMLHttpRequest)
-            {
-                req = new XMLHttpRequest();
-            } 
-            else if (window.ActiveXObject) 
-            {
-                try {
-                    req = new ActiveXObject("Msxml2.XMLHTTP.6.0");
-                } catch (e)
-                {
-                    try {
-                        req = new ActiveXObject("Microsoft.XMLHTTP");
-                    } catch (e) 
-                    {
-                        alert("XHR not created");
-                    }
-                }
-                }
-            return req;
-        };
-    </script>
-
     <div class=" row align-items-cente"></div>
 
     <div class="container-sm col-4 text-center pt-5 pb-5">
@@ -115,6 +89,23 @@
                         }
 
                         // commande ajax
+                        function createInstance() {
+                            var req = null;
+                            if (window.XMLHttpRequest) {
+                                req = new XMLHttpRequest();
+                            } else if (window.ActiveXObject) {
+                                try {
+                                    req = new ActiveXObject("Msxml2.XMLHTTP.6.0");
+                                } catch (e) {
+                                    try {
+                                        req = new ActiveXObject("Microsoft.XMLHTTP");
+                                    } catch (e) {
+                                        alert("XHR not created");
+                                    }
+                                }
+                            }
+                            return req;
+                        };
 
                         function submitFormSG() {
                             if (verif_password()) {
@@ -125,14 +116,15 @@
                                         if (req.status == 200) {
                                             console.log(req.responseText);
                                             if (req.responseText == 'true') {
-                                                alert(document.getElementById("formSG").submit());
+                                                document.getElementById("formSG").submit();
                                             }
                                         }
                                     }
                                 }
                                 req.open("POST", "login-ajax.php", true);
-                                req.setRequestHeader("Content-type", "application/x-www-formurlencoded");
-                                req.send("SGmail=" + document.getElementById("formSG").SGmail.value + "&SGpass=" + document.getElementById("formSG").SGpass.value);
+                                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                data = "SGmail=" + document.getElementById("formSG").SGmail.value + "&SGpass=" + document.getElementById("formSG").SGpass.value;
+                                req.send(data);
                                 console.log(req);
                             }
                             return false;
@@ -201,9 +193,8 @@ if ($_POST) {
         if ($_POST['LGmail'] != "" && $_POST['LGpass'] != "") {
             // authentification 
             if (user::login($_POST['LGmail'], $_POST['LGpass'])) {
-               header('Location: index.php');
-              
-            } 
+                header('Location: index.php');
+            }
         } else echo 'error login';
     }
 }
@@ -215,11 +206,8 @@ if ($_POST) {
             if ($_POST['SGpass'] == $_POST['SGpass2'] && !user::doesUserExist($_POST['SGmail'])) {
                 // authentification 
                 user::createUser(array("mail" => $_POST['SGmail'], "password" => $_POST['SGpass']));
-               header('Location: login.php');
-
-          
-            }
-            else  echo 'error register';
+                header('Location: login.php');
+            } else  echo 'error register';
         }
     }
 }
