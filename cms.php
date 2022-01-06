@@ -10,41 +10,23 @@
     </div>
 
     <div class="container border border-dark" style=" border-radius:40px; ">
-        <div class="topline col-12 d-flex border border-dark" style=" border-radius:40px; ">
-        <div class="col-1 pl-10"><p>image</p></div>
-        <div class="col-2"><p>name</p></div>
-        <div class="col-4"><p>link</p></div>
-        <div class="col-3"><p>date of creation</p></div>
+        <div class="topline col-12 d-flex " style=" border-radius:40px; ">
+        <div class="col-1 ml-10 mt-2"><p>image</p></div>
+        <div class="col-2 mt-2"><p>name</p></div>
+        <div class="col-4 mt-2"><p>link</p></div>
+        <div class="col-3 mt-2"><p>date of creation</p></div>
         <div class="col-1"><p></p></div>
-        <div class="col-1"><p>+ NEW</p></div>
+        <div class="col-1 mt-1"><a class="btn btn-outline-primary" href="addCard.php" style="">+ NEW</a></div>
         </div>
 
-        <div class="listOfTasks">
-                    <?php
-                    try {
-                        $dbh = new PDO("mysql:host=localhost;dbname=tp2", $user, $pass);
-                        $stmt = $dbh->prepare("SELECT * FROM tasks WHERE idu=? ORDER BY state, id DESC");
-                        $stmt->bindParam(1, $_SESSION["idu"]);
-                        $stmt->execute();
-                        foreach ($stmt as $row) { ?>
-                            <div style="border:1px black solid;<?= $row["state"]?"background-color:grey;":""; ?>" class="task1" name="task1" id="task1">
-                                <form action="todo.php" method="post" id="changeState<?= $row["id"] ?>">
-                                    <input type="hidden" name="taskToChange" value="<?= $row["id"] ?>">
-                                    <input onchange="document.getElementById('changeState<?= $row["id"] ?>').submit();" type="checkbox" name="state" <?= $row["state"]?"checked":""; ?>>
-                                </form>
-                                <div class="taskDesc"><?= $row["description"] ?></div>
-                                <form action="./todo.php" method="post">
-                                    <input type="hidden" name="taskId" value="<?= $row["id"] ?>">
-                                    <input type="submit" value="Del">
-                                </form>
-                            </div>
-                    <?php }
-                    } catch (PDOException $error) {
-                    } finally {
-                    }
-                    ?>
-                </div>
+       
+                 
 
+                     <?php
+                // getCards($from, $to)
+
+                        ?> 
+                        
 
     </div>
 
@@ -86,14 +68,32 @@ if($hub){ ?>
 
   <!-- creation nouveau hub -->
 <div class=" col-3 p-4 ">
-    <h1>New Hub</h1>
+    <?php
+if ($_POST) {
+            if (isset($_GET['hid']) && $_GET['hid'] != "") {
+                $hub = new hub($_GET['hid']);
+                $hubname = $hub->name;
+                echo "<h1>$hubname</h1> <br> <h3>ShareHub</h3>";
+            } else {
+                echo "<h1>New Hub</h1>";
+                echo"<h3>ShareHub</h3>";
+            }
+        } else {
+            echo "<h1>New Hub</h1>";
+            echo"<h3>ShareHub</h3>";
+        }
+        ?>
+
+<div class=" col-3 p-4 ">
+    <h1>New Card</h1>
     <h3>ShareHub</h3>
+    </div>
     </div>
     <body>
     <div id="loginform" class="container-sm col-4 border border-dark  " style=" border-radius:40px; ">
                         <h3 class="text-center text-black pt-3">new hub</h3>
 
-                        <form method="post" id="formSG" class="mb-3">
+                        <form method="post" id="formNH" class="mb-3">
                             <span id="errorsSpanSG"></span>
                             <div class="form-outline mb-4 ">
                                 <label for="exampleFormControlInput1" class="form-label">title</label>
