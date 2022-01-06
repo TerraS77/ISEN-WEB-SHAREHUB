@@ -1,6 +1,5 @@
 <?php
 require_once('bdd.php');
-require_once('user.php');
 
 // $hub = hub::createHub(array("LibHub" => "Test", "DescHub" => "newTest", "IdUser" => 1));
 // $hub->cards->createCard(array("index" => 0, "lib" => "News", "imageUrl" => "https://www.isen-mediterranee.fr/global/upload/news/normal/2568.jpg"));
