@@ -86,7 +86,7 @@ class cardManager{
     private function addCard($cardData){
         $card = new card(
             $this->parentId, 
-            intval($cardData['Index']), 
+            intval($cardData['index']), 
             $cardData['IdCard'], 
             isset($cardData['lib']) ? $cardData['lib'] : null, 
             isset($cardData['url']) ? $cardData['url'] : null,
