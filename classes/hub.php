@@ -52,13 +52,13 @@ class hub{
                 $dbh = getBddPDO();
                 $data = intval($data);
                 $data = $dbh->query('SELECT * FROM hubs WHERE IdHub = '.$data);
+                $data = $data->fetch();
                 $dbh = null;
                 if(!$data) echo "ERROR : No hub with this ID. <br/>";
             } catch( PDOException $e){
                 echo $e->getMessage()."<br/>";
             }
         }
-        $data = $data->fetch();
         $this->id = $data["IdHub"];
         $this->name = $data['LibHub'];
         $this->desc = $data['DescHub'];
