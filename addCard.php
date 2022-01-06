@@ -5,6 +5,22 @@
     <!-- <script src="js/bootstrap.bundle.min.js"></script> -->
 
 </head>
+<?php
+
+require_once('classes/hub.php');
+require_once('classes/user.php');
+
+$userId = false;
+if ($_COOKIE) {
+    if (isset($_COOKIE["LoggedAccount"])) {
+        $userId = $_COOKIE["LoggedAccount"];
+    }
+}
+// if(!$userId) header('Location: login.php');
+
+$user = new user($userId);
+$hub = $user->getHub();
+?>
 
 <div class=" col-3 p-4 ">
     <?php
@@ -37,11 +53,11 @@
             </div>
             <div class="form-outline mb-4">
                 <label for="exampleFormControlInput1" class="form-label">link</label>
-                <input type="password" class="form-control" name="link" id="hubDescription">
+                <input type="text" class="form-control" name="link" id="hubDescription">
             </div>
             <div class="form-outline mb-4">
                 <label for="exampleFormControlInput1" class="form-label">image URL</label>
-                <input type="password" class="form-control" name="URLpng" id="URLpng">
+                <input type="text" class="form-control" name="URLpng" id="URLpng">
             </div>
 
             <div class="d-flex justify-content-center align-items-center">
@@ -54,7 +70,12 @@
         <a href="cms.php" class=" btn btn-outline-secondary">&laquo; back</a>
     </div>
 </body>
-
+<script>
+                const hub = {
+                    name: "<?= $hub->name ?>",
+                    id: <?= $hub->id ?>
+                }
+            </script>
 <?php
 require_once("classes/hub.php");
 
@@ -68,10 +89,11 @@ if ($_POST) {
     if (isset($_POST['cardtitle']) && isset($_POST['link']) && isset($_POST['URLpng'])) {
         if ($_POST['cardtitle'] != "" && $_POST['link'] != "" && $_POST['URLpng'] != "") {
             // authentification 
-            echo 'error on est dedans';
-            $hub->cards->createCard(array("index" => 0, "lib" => $_POST['cardtitle'], "url" => $_POST['link'], "imageUrl" => $_POST['URLpng']));
+            
+            $hub->cards->createCard(array("Index" => $hub->cards->getNumberOfCards(), "lib" => $_POST['cardtitle'], "url" => $_POST['link'], "imageUrl" => $_POST['URLpng']));
+            header('Location: cms.php');
         } else echo 'error ';
-    } else echo 'error createrer card';
+    } else echo 'error';
 }
 
 var_dump($_POST);

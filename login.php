@@ -20,7 +20,7 @@ if ($_POST) {
         if ($_POST['LGmail'] != "" && $_POST['LGpass'] != "") {
             // authentification 
             if (user::login($_POST['LGmail'], $_POST['LGpass'])) {
-                header('Location: index.php');
+                header('Location: cms.php');
             }
         } else echo 'error login';
     }
