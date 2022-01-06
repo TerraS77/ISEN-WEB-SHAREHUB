@@ -14,6 +14,21 @@ class hub{
     public $userId;
     public $cards;
 
+    static function doesHubExist($id){
+        try{
+            $dbh = getBddPDO();
+            $request = $dbh->prepare('SELECT * FROM hubs WHERE `IdHub` = :IdHub');
+            $request->bindValue(':IdHub', $id);
+            $request->execute();
+            $data = $request->fetch();
+            $dbh = null;
+            if($data) return true;
+            else return false;
+        }catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
+    }
+
     static function createHub($data){
         try{
             $dbh = getBddPDO();
@@ -144,6 +159,10 @@ class card{
         $this->name = $name;
         $this->url = $url;
         $this->imageUrl = $imageUrl;
+    }
+    function getJson(){
+        $data = array("id" => $this->id, "index" => $this->index, "name" => $this->name, "url" => $this->url, "media" => $this->url);
+        return json_encode($data);
     }
 }
 
