@@ -15,6 +15,6 @@ if ($_POST) {
             if (!user::doesUserExist($_POST['SGmail'])) echo 'true';
             else echo 'false';
         }
-    }else echo "ERROR : no post parameters";
+    }else echo "ERROR : no post parameters"; 
 }else echo "ERROR : no post";
 ?>
