@@ -143,6 +143,10 @@ class cardManager{
         }
         return $result;
     }
+
+    function getNumberOfCards(){
+        return sizeof($this->cards);
+    }
 }
 
 class card{
