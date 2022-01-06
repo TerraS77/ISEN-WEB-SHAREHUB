@@ -86,7 +86,7 @@ class cardManager{
     private function addCard($cardData){
         $card = new card(
             $this->parentId, 
-            intval($cardData['index']), 
+            intval($cardData['Index']), 
             $cardData['IdCard'], 
             isset($cardData['lib']) ? $cardData['lib'] : null, 
             isset($cardData['url']) ? $cardData['url'] : null,
@@ -97,8 +97,8 @@ class cardManager{
     function createCard($cardData){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('INSERT INTO cards (`index`, `lib`, `url`, `imageUrl`, `IdHub`) VALUES (:index, :lib, :url, :imageUrl, :IdHub);');
-            $request->bindValue(':index', intval($cardData['index']));
+            $request = $dbh->prepare('INSERT INTO cards (`Index`, `lib`, `url`, `imageUrl`, `IdHub`) VALUES (:index, :lib, :url, :imageUrl, :IdHub);');
+            $request->bindValue(':index', intval($cardData['Index']));
             if(isset($cardData['lib'])) $request->bindValue(':lib', $cardData['lib']);
             else $request->bindValue(':lib', null);
             if(isset($cardData['url'])) $request->bindValue(':url', $cardData['url']);
