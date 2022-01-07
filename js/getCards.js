@@ -1,19 +1,20 @@
-async function getCards(from, to, printCard) {
-    var req = createInstance();
-    req.onreadystatechange = function () {
-        if (req.readyState == 4) {
-            if (req.status == 200) {
-                JSON.parse(req.responseText).map(x => JSON.parse(x)).forEach(card => {
-                    printCard(card);
-                });
-            } 
+async function getCards(from, to){
+    //returning a promise 
+    return new Promise((resolve, reject) => {
+        var req = createInstance();
+        req.onreadystatechange = function () {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    console.log(req.responseText);
+                    resolve(JSON.parse(req.responseText));
+                } 
+            }
         }
-    }
-    req.open("POST", "card-ajax.php", true);
-    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    data = "h=" + hub.id + "&f=" + from + "&t=" + to;
-    req.send(data);
-    return false;
+        req.open("POST", "card-ajax.php", true);
+        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        data = "h=" + hub.id + "&f=" + from + "&t=" + to;
+        req.send(data);
+    });
 }
 
 function createInstance() {
@@ -33,3 +34,18 @@ function createInstance() {
     }
     return req;
 };
+
+function isCardVisible(card){
+    if(!card) return true;
+    return new Promise((resolve, reject) => {
+        var observer = new IntersectionObserver(function(entries) {
+            if(entries[0]['isIntersecting'] === true) {
+                resolve(true);
+            }
+            else {
+                resolve(false);
+            }
+        }, { threshold: [0, 0.5, 1] });
+        observer.observe(card);
+    });
+}

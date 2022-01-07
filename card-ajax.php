@@ -2,7 +2,7 @@
 
 require_once("classes/hub.php");
 function getJson($c){
-    return $c->getJson();
+    return json_decode($c->getJson());
 }
 
 if($_POST){
