@@ -21,6 +21,15 @@ if (!$userId) header('Location: login.php');
 $user = new user($userId);
 $hub = $user->getHub();
 
+var_dump($_POST);
+if ($_POST) {
+    if (isset($_POST['taskDel']) ) {
+        if ($_POST['taskDel'] != "" ) {
+            $hub->cards->removeCard($_POST['taskDel']);
+        } else echo 'error del';
+    }
+}
+
 if ($hub) { ?>
 
     <body>
@@ -40,48 +49,53 @@ if ($hub) { ?>
 
 
         <!-- <div class="container table border border-dark" style=" border-radius:40px; "> -->
-            <div class="pl-100 sss" style="padding-left: 100px;padding-right: 100px;">
-        <table class="table">
-            <!-- TOP LINE -->
-            <thead>
-                <tr>
-                    <th scope="col">image</th>
-                    <th scope="col">name</th>
-                    <th scope="col">link</th>
-                    <th scope="col"></th>
-                    <th scope="col"><a class="btn btn-outline-primary" href="addCard.php" style="">+ NEW</a></th>
-                </tr>
-            </thead>
-           
-            
-            <tbody>
-                <?php
-                foreach ($hub->cards->getCards(0, 50) as $row) {
-
-                ?>
+        <div class="pl-100 sss" style="padding-left: 100px;padding-right: 100px;">
+            <table class="table">
+                <!-- TOP LINE -->
+                <thead>
                     <tr>
-                        <th scope="row" class="col-3 ml-10 mt-2 d-flex "> <img class="image" height="50px" src='<?= $row->imageUrl ?>'></img></th>
-                        <td><?= $row->name ?></td>
-                        <td><?= $row->url ?></td>
-                        <td>edit</td>
-                        <td>delete</td>
+                        <th scope="col">image</th>
+                        <th scope="col">name</th>
+                        <th scope="col">link</th>
+                        <th scope="col"></th>
+                        <th scope="col"><a class="btn btn-outline-primary" href="addCard.php">+ NEW</a></th>
                     </tr>
-
-                   
-
-                <?php
-                }
-                ?>
+                </thead>
 
 
-            </tbody>
-        </div></div>
+                <tbody>
+                    <?php
+                    foreach ($hub->cards->getCards(0, 50) as $row) {
+
+                    ?>
+                        <tr>
+                            <th scope="row" class="col-3 ml-10 mt-2 d-flex "> <img class="image" height="50px" src='<?= $row->imageUrl ?>'></img></th>
+                            <td><?= $row->name ?></td>
+                            <td><?= $row->url ?></td>
+                            <td>edit</td>
+                            <form action="./cms.php" method="post">
+                                    <input type="hidden" name="taskDel" value="<?= $row->index ?>">
+                                
+                                <td><input type="submit" class="btn btn-danger" id="supprbtn" value="delete"></input></td>
+                                </form>
+                        </tr>
+
+
+
+                    <?php
+                    }
+                    ?>
+
+
+                </tbody>
+        </div>
+        </div>
 
 
 
 
-        
-</table>
+
+        </table>
 
 
 

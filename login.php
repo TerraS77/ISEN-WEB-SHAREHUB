@@ -234,12 +234,4 @@ if ($_POST) {
 
 </body>
 
-
-
-<!-- user::createUser(array("mail" => $_POST['SGmail'], "password" => $_POST['SGpass'])); -->
-
-
-
-
-
 </html>
