@@ -119,7 +119,7 @@ class cardManager{
         try{
             $dbh = getBddPDO();
             foreach($this->cards as $card){
-                if($card->index = $index) {
+                if($card->index == $index) {
                     $dbh->query('DELETE FROM `cards` WHERE IdCard = '.$card->id);
                 } else if($card->index > $index) {
                     $card->index--;
@@ -165,7 +165,7 @@ class card{
         $this->imageUrl = $imageUrl;
     }
     function getJson(){
-        $data = array("id" => $this->id, "index" => $this->index, "name" => $this->name, "url" => $this->url, "media" => $this->url);
+        $data = array("id" => $this->id, "index" => $this->index, "name" => $this->name, "url" => $this->url, "media" => $this->imageUrl);
         return json_encode($data);
     }
 }
