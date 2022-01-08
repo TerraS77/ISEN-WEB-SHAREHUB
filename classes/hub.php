@@ -113,8 +113,20 @@ class cardManager{
             echo $e->getMessage()."<br/>";
         }
     }
-
-    //MUST UPDATE INDEXES
+    function updateCard($cardData){
+        try{
+            $dbh = getBddPDO();
+            $request = $dbh->prepare('UPDATE cards SET `lib` = :lib, `url` = :url, `imageUrl` = :media WHERE IdCard = :id');
+            $request->bindValue(':id', $cardData['id']);
+            $request->bindValue(':lib', $cardData['lib']);
+            $request->bindValue(':url', $cardData['url']);
+            $request->bindValue(':media', $cardData['imageUrl']);
+            $request->execute();
+            $dbh = null;
+        }catch( PDOException $e){
+            echo $e->getMessage()."<br/>";
+        }
+    }
     function removeCard($index){
         try{
             $dbh = getBddPDO();
