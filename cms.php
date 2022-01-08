@@ -22,8 +22,8 @@ if ($_COOKIE) {
 if (!$userId) header('Location: login.php');
 
 if ($_POST) {
-    if (isset($_POST['taskDel']) ) {
-        $hub->cards->removeCard($_POST['taskDel']);
+    if (isset($_POST['cardDel']) ) {
+        $hub->cards->removeCard($_POST['cardDel']);
     }
 }
 
@@ -64,9 +64,18 @@ if ($hub) { ?>
                             <td><img class="image" height="50px" src='<?= $row->imageUrl ?>'></img></td>
                             <td><?= $row->name ?></td>
                             <td><?= $row->url ?></td>
-                            <td>edit</td>
+                            
+                            <form action="./editcard.php" method="post">
+                                    <input type="hidden" name="editId" value="<?= $row->id ?>">
+                                    <input type="hidden" name="editIMG" value="<?= $row->imageUrl ?>">
+                                    <input type="hidden" name="editName" value="<?= $row->name ?>">
+                                    <input type="hidden" name="editLink" value="<?= $row->url ?>">
+                                
+                                <td><input type="submit" class="btn btn-secondary" id="supprbtn" value="edit"></input></td>
+                                </form>
+                            <!-- <td>edit</td> -->
                             <form action="./cms.php" method="post">
-                                <input type="hidden" name="taskDel" value="<?= $row->index ?>">
+                                <input type="hidden" name="cardDel" value="<?= $row->index ?>">
                                 <td><input type="submit" class="btn btn-danger" id="supprbtn" value="delete"></input></td>
                             </form>
                         </tr>
