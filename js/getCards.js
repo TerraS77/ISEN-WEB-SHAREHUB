@@ -5,7 +5,6 @@ async function getCards(from, to){
         req.onreadystatechange = function () {
             if (req.readyState == 4) {
                 if (req.status == 200) {
-                    console.log(req.responseText);
                     resolve(JSON.parse(req.responseText));
                 } 
             }

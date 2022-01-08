@@ -11,14 +11,21 @@ body{
     border: 1px solid black;
     background:white;
     border-radius:400px!important;
+    margin-top: 1rem;
 }
 
-.sss{
-    
+.table-cont{
     border: 1px solid black;
     background:white;
-    border-radius:40px!important;
+    border-radius:40px !important;
     padding-left: 100px;
-    
     padding-right: 100px;
+    margin-right: 5vw;
+    margin-left: 5vw;
+}
+
+.centerText {
+
+    
+    justify-content: center;
 }
