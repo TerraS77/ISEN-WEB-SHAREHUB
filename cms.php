@@ -4,7 +4,7 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/cms.css" rel="stylesheet">
-    <link href="css/nav.css" rel="stylesheet"/>
+    <link href="css/nav.css" rel="stylesheet" />
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 </head>
 
@@ -22,7 +22,7 @@ if ($_COOKIE) {
 if (!$userId) header('Location: login.php');
 
 if ($_POST) {
-    if (isset($_POST['cardDel']) ) {
+    if (isset($_POST['cardDel'])) {
         $hub->cards->removeCard($_POST['cardDel']);
     }
 }
@@ -30,14 +30,24 @@ if ($_POST) {
 $user = new user($userId);
 $hub = $user->getHub();
 
+if ($_POST) {
+    if (isset($_POST['editId']) && isset($_POST['updateTitle']) && isset($_POST['updateLink']) && isset($_POST['updateURLpng'])) {
+        if ($_POST['editId'] != "" && $_POST['updateTitle'] != "" && $_POST['updateLink'] != "" && $_POST['updateURLpng'] != "") {
+
+            $hub->cards->updateCard(array("id" => $_POST['editId'], "lib" => $_POST['updateTitle'], "url" => $_POST['updateLink'], "imageUrl" => $_POST['updateURLpng']));
+             header('Location: cms.php');
+        }
+    }
+}
 
 if ($hub) { ?>
+
     <body>
-        <?php 
-       getNavbar(true, $hub, $user);
+        <?php
+        getNavbar(true, $hub, $user);
         ?>
         <div class=" col-3 p-4 ">
-            <h1><?=$hub->name?></h1>
+            <h1><?= $hub->name ?></h1>
             <h3>ShareHub</h3>
         </div>
         <script>
@@ -50,7 +60,7 @@ if ($hub) { ?>
         <div class="pl-100 table-cont">
             <table class="table">
                 <thead>
-                    <tr >
+                    <tr>
                         <th scope="col">Image</th>
                         <th scope="col">Name</th>
                         <th scope="col">URL</th>
@@ -64,22 +74,33 @@ if ($hub) { ?>
                             <td><img class="image" height="50px" src='<?= $row->imageUrl ?>'></img></td>
                             <td><?= $row->name ?></td>
                             <td><?= $row->url ?></td>
-                            
-                            <form action="./editcard.php" method="post">
-                                    <input type="hidden" name="editId" value="<?= $row->id ?>">
-                                    <input type="hidden" name="editIMG" value="<?= $row->imageUrl ?>">
-                                    <input type="hidden" name="editName" value="<?= $row->name ?>">
-                                    <input type="hidden" name="editLink" value="<?= $row->url ?>">
-                                
-                                <td><input type="submit" class="btn btn-secondary" id="supprbtn" value="edit"></input></td>
-                                </form>
-                            <!-- <td>edit</td> -->
+
+                            <!-- <form action="./editcard.php" method="post"> -->
+                            <input type="hidden" name="editId" value="<?= $row->id ?>">
+                            <input type="hidden" name="editIMG" value="<?= $row->imageUrl ?>">
+                            <input type="hidden" name="editName" value="<?= $row->name ?>">
+                            <input type="hidden" name="editLink" value="<?= $row->url ?>">
+
+                            <td><input class="btn btn-secondary" id="supprbtn" value="edit" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></input></td>
+                            <!-- </form> -->
                             <form action="./cms.php" method="post">
                                 <input type="hidden" name="cardDel" value="<?= $row->index ?>">
                                 <td><input type="submit" class="btn btn-danger" id="supprbtn" value="delete"></input></td>
                             </form>
+
+
+
+
+                            <!-- MODAL EDIT -->
+                            <?php require_once("editcard.php");?>
+                           
+
+
                         </tr>
-                    <?php } ?>
+                    <?php 
+                    }
+
+                    ?>
 
 
                 </tbody>
@@ -165,6 +186,7 @@ if ($hub) { ?>
             } else echo 'error login';
         }
     }
+
     ?>
 
 <?php
