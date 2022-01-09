@@ -2,6 +2,16 @@
 require_once("classes/user.php");
 require_once("nav.php");
 $hub = null;
+$userId = false;
+$user = null;
+
+if ($_COOKIE) {
+    if (isset($_COOKIE["LoggedAccount"])) {
+        $userId = $_COOKIE["LoggedAccount"];
+    }
+}
+if($userId) $user = new user($userId);
+
 if ($_GET) {
   if (isset($_GET["h"])) {
     $id = intval($_GET["h"]);
@@ -9,16 +19,14 @@ if ($_GET) {
       $hub = new hub($id);
     }
   }
-} else header('Location: login.php');
-
-$userId = false;
-$user = null;
-if ($_COOKIE) {
-    if (isset($_COOKIE["LoggedAccount"])) {
-        $userId = $_COOKIE["LoggedAccount"];
-    }
+} else {
+  if(!$user) header('Location: login.php');
+  else {
+    $userHub = $user->getHub();
+    if(!$userHub) header('Location: cms.php');
+    else header('Location: ?h='.$userHub->id);
+  }
 }
-if($userId) $user = new user($userId);
 
 ?>
 
