@@ -6,11 +6,11 @@ $userId = false;
 $user = null;
 
 if ($_COOKIE) {
-    if (isset($_COOKIE["LoggedAccount"])) {
-        $userId = $_COOKIE["LoggedAccount"];
-    }
+  if (isset($_COOKIE["LoggedAccount"])) {
+    $userId = $_COOKIE["LoggedAccount"];
+  }
 }
-if($userId) $user = new user($userId);
+if ($userId) $user = new user($userId);
 
 if ($_GET) {
   if (isset($_GET["h"])) {
@@ -20,11 +20,11 @@ if ($_GET) {
     }
   }
 } else {
-  if(!$user) header('Location: login.php');
+  if (!$user) header('Location: login.php');
   else {
     $userHub = $user->getHub();
-    if(!$userHub) header('Location: cms.php');
-    else header('Location: ?h='.$userHub->id);
+    if (!$userHub) header('Location: cms.php');
+    else header('Location: ?h=' . $userHub->id);
   }
 }
 
@@ -46,11 +46,12 @@ if ($_GET) {
   <script src="js/getCards.js"></script>
   <script src="js/index.js"></script>
   <link href="css/bootstrap.min.css" rel="stylesheet" />
-  <link href="css/nav.css" rel="stylesheet"/>
+  <link href="css/nav.css" rel="stylesheet" />
 </head>
+
 <body>
   <header>
-    <?php getNavbar(false, $hub, $user)?>
+    <?php getNavbar(false, $hub, $user) ?>
   </header>
   <div class="container" id="contain">
     <div class="row g-1" id="row">

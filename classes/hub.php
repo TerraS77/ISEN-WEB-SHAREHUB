@@ -1,12 +1,6 @@
 <?php
 require_once('bdd.php');
 
-// $hub = hub::createHub(array("LibHub" => "Test", "DescHub" => "newTest", "IdUser" => 1));
-// $hub->cards->createCard(array("index" => 0, "lib" => "News", "imageUrl" => "https://www.isen-mediterranee.fr/global/upload/news/normal/2568.jpg"));
-
-// $hub = new hub(15);
-// var_dump($hub->cards->getCards(0, 0));
-
 class hub{
     public $id;
     public $name;
@@ -135,7 +129,7 @@ class cardManager{
                     $dbh->query('DELETE FROM `cards` WHERE IdCard = '.$card->id);
                 } else if($card->index > $index) {
                     $card->index--;
-                    $dbh->query('UPDATE cards SET index = '.$card->index.' WHERE IdCard = '.$card->id);
+                    $dbh->query('UPDATE cards SET `index` = '.$card->index.' WHERE IdCard = '.$card->id);
                 }
             }
             $index;
