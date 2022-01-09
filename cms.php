@@ -39,6 +39,18 @@ if ($_POST) {
         }
     }
 }
+var_dump($_POST);
+if ($_POST) {
+    if (isset($_POST['cardtitle']) && isset($_POST['link']) && isset($_POST['URLpng'])) {
+        if ($_POST['cardtitle'] != "" && $_POST['link'] != "" && $_POST['URLpng'] != "") {
+            
+            
+            $hub->cards->createCard(array("Index" => $hub->cards->getNumberOfCards()+1, "lib" => $_POST['cardtitle'], "url" => $_POST['link'], "imageUrl" => $_POST['URLpng']));
+            header('Location: cms.php');
+            echo"youhou";
+        } else echo 'erroezzr ';
+    } else echo 'errezzaaaaeor';
+}
 
 if ($hub) { ?>
 
@@ -65,7 +77,11 @@ if ($hub) { ?>
                         <th scope="col">Name</th>
                         <th scope="col">URL</th>
                         <th scope="col"></th>
-                        <th scope="col"><a class="btn btn-outline-primary" href="addCard.php">+ NEW</a></th>
+                        <th scope="col"><a class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropADD">+ NEW</a></th>
+                        <!-- MODAL ADD -->
+                        <?php require_once("addcard.php");
+                        ?>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -75,13 +91,13 @@ if ($hub) { ?>
                             <td><?= $row->name ?></td>
                             <td><?= $row->url ?></td>
 
-                            <!-- <form action="./editcard.php" method="post"> -->
+                            <!-- <form method="post"> -->
                             <input type="hidden" name="editId" value="<?= $row->id ?>">
                             <input type="hidden" name="editIMG" value="<?= $row->imageUrl ?>">
                             <input type="hidden" name="editName" value="<?= $row->name ?>">
                             <input type="hidden" name="editLink" value="<?= $row->url ?>">
 
-                            <td><input class="btn btn-secondary" id="supprbtn" value="edit" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></input></td>
+                            <td><input class="btn btn-secondary" id="supprbtn" value="edit" data-bs-toggle="modal" data-bs-target="#staticBackdropEDIT"></input></td>
                             <!-- </form> -->
                             <form action="./cms.php" method="post">
                                 <input type="hidden" name="cardDel" value="<?= $row->index ?>">
@@ -186,6 +202,7 @@ if ($hub) { ?>
             } else echo 'error login';
         }
     }
+    
 
     ?>
 
