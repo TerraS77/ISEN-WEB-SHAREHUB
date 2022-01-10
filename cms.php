@@ -104,8 +104,8 @@ if ($hub) { ?>
     <body>
         <div id="loginform" class="container-sm col-4 border border-dark" style="border-radius:40px;">
             <h3 class="text-center text-black pt-3">New Hub</h3>
-            <form method="post" id="formNH" class="mb-3">
-                <span id="errorsSpanSG"></span>
+            <form method="post" id="formNH" class="mb-3" onsubmit="return submitFormNH();">
+                <span id="errorsSpanNH"></span>
                 <div class="form-outline mb-4 ">
                     <label for="exampleFormControlInput1" class="form-label">Title</label>
                     <input type="text" class="form-control" name="hubTitle" id="hubTitle">
@@ -131,5 +131,27 @@ if ($hub) { ?>
     }
 }
 ?>
+<script>
+
+function submitFormNH() {
+    
+       
+        form = document.getElementById("formNH");
+        
+                    if (verif_NH== 'true') {
+                        form.submit();
+                    }else document.getElementById("errorsSpanSG").innerHTML = `<div class="alert alert-danger" role="alert"> fill the title and the description </div>`; //ERROR   
+}
+
+function verif_NH() {
+    let passTab = [];
+    passTab.push(document.getElementById('hubTitle'));
+    passTab.push(document.getElementById('hubDescription'));
+    if (passTab[0].value == passTab[1].value && passTab[0].value == "") { // champs vides
+        return false;
+    } else return true;
+}
+
+</script>
 
 </html>
