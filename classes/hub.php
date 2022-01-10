@@ -11,7 +11,7 @@ class hub{
     static function doesHubExist($id){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('SELECT * FROM hubs WHERE `IdHub` = :IdHub');
+            $request = $dbh->prepare('SELECT * FROM Hubs WHERE `IdHub` = :IdHub');
             $request->bindValue(':IdHub', $id);
             $request->execute();
             $data = $request->fetch();
@@ -26,7 +26,7 @@ class hub{
     static function createHub($data){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('INSERT INTO hubs (`LibHub`, `DescHub`, `IdUser`) VALUES (:LibHub, :DescHub, :IdUser)');
+            $request = $dbh->prepare('INSERT INTO Hubs (`LibHub`, `DescHub`, `IdUser`) VALUES (:LibHub, :DescHub, :IdUser)');
             $request->bindValue(':LibHub', $data['LibHub']);
             $request->bindValue(':DescHub', $data['DescHub']);
             $request->bindValue(':IdUser', $data['IdUser']);
@@ -45,7 +45,7 @@ class hub{
             try{
                 $dbh = getBddPDO();
                 $data = intval($data);
-                $data = $dbh->query('SELECT * FROM hubs WHERE IdHub = '.$data);
+                $data = $dbh->query('SELECT * FROM Hubs WHERE IdHub = '.$data);
                 $data = $data->fetch();
                 $dbh = null;
                 if(!$data) echo "ERROR : No hub with this ID. <br/>";
@@ -69,7 +69,7 @@ class cardManager{
         $this->parentId = $parentId;
         try{
             $dbh = getBddPDO();
-            $cards = $dbh->query('SELECT * FROM cards WHERE IdHub = '.$parentId)->fetchAll();
+            $cards = $dbh->query('SELECT * FROM Cards WHERE IdHub = '.$parentId)->fetchAll();
             $this->cards = array();
             if($cards) foreach($cards as $row) $this->addCard($row);
             $dbh = null;
@@ -91,7 +91,7 @@ class cardManager{
     function createCard($cardData){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('INSERT INTO cards (`Index`, `lib`, `url`, `imageUrl`, `IdHub`) VALUES (:index, :lib, :url, :imageUrl, :IdHub);');
+            $request = $dbh->prepare('INSERT INTO Cards (`Index`, `lib`, `url`, `imageUrl`, `IdHub`) VALUES (:index, :lib, :url, :imageUrl, :IdHub);');
             $request->bindValue(':index', intval($cardData['Index']));
             if(isset($cardData['lib'])) $request->bindValue(':lib', $cardData['lib']);
             else $request->bindValue(':lib', null);
@@ -110,7 +110,7 @@ class cardManager{
     function updateCard($cardData){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('UPDATE cards SET `lib` = :lib, `url` = :url, `imageUrl` = :media WHERE IdCard = :id');
+            $request = $dbh->prepare('UPDATE Cards SET `lib` = :lib, `url` = :url, `imageUrl` = :media WHERE IdCard = :id');
             $request->bindValue(':id', $cardData['id']);
             $request->bindValue(':lib', $cardData['lib']);
             $request->bindValue(':url', $cardData['url']);
@@ -126,14 +126,14 @@ class cardManager{
             $dbh = getBddPDO();
             foreach($this->cards as $card){
                 if($card->index == $index) {
-                    $dbh->query('DELETE FROM `cards` WHERE IdCard = '.$card->id);
+                    $dbh->query('DELETE FROM `Cards` WHERE IdCard = '.$card->id);
                 } else if($card->index > $index) {
                     $card->index--;
-                    $dbh->query('UPDATE cards SET `index` = '.$card->index.' WHERE IdCard = '.$card->id);
+                    $dbh->query('UPDATE Cards SET `index` = '.$card->index.' WHERE IdCard = '.$card->id);
                 }
             }
             $index;
-            $cards = $dbh->query('SELECT * FROM cards WHERE IdHub = '.$this->parentId)->fetchAll();
+            $cards = $dbh->query('SELECT * FROM Cards WHERE IdHub = '.$this->parentId)->fetchAll();
             $this->cards = array();
             if($cards) foreach($cards as $row) $this->addCard($row);
         }catch( PDOException $e){

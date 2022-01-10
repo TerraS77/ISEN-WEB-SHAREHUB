@@ -11,7 +11,7 @@ class user{
     static function createUser($data){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('INSERT INTO users (`mail`, `password`) VALUES (:mail, :password)');
+            $request = $dbh->prepare('INSERT INTO Users (`mail`, `password`) VALUES (:mail, :password)');
             $request->bindValue(':mail', $data['mail']);
             $request->bindValue(':password', $data['password']);
             $request->execute();
@@ -26,7 +26,7 @@ class user{
     static function login($mail, $password){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('SELECT * FROM users WHERE `mail` = :mail AND `password` = :password');
+            $request = $dbh->prepare('SELECT * FROM Users WHERE `mail` = :mail AND `password` = :password');
             $request->bindValue(':mail', $mail);
             $request->bindValue(':password', $password);
             $request->execute();
@@ -44,7 +44,7 @@ class user{
     static function doesUserExist($mail){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('SELECT * FROM users WHERE `mail` = :mail');
+            $request = $dbh->prepare('SELECT * FROM Users WHERE `mail` = :mail');
             $request->bindValue(':mail', $mail);
             $request->execute();
             $data = $request->fetch();
@@ -60,7 +60,7 @@ class user{
     {
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('SELECT * FROM users WHERE `IdUser` = :IdUser');
+            $request = $dbh->prepare('SELECT * FROM Users WHERE `IdUser` = :IdUser');
             $request->bindValue(':IdUser', $id);
             $request->execute();
             $data = $request->fetch();
@@ -75,7 +75,7 @@ class user{
     function getHub(){
         try{
             $dbh = getBddPDO();
-            $request = $dbh->prepare('SELECT IdHub FROM hubs WHERE `IdUser` = :IdUser');
+            $request = $dbh->prepare('SELECT IdHub FROM Hubs WHERE `IdUser` = :IdUser');
             $request->bindValue(':IdUser', $this->id);
             $request->execute();
             $data = $request->fetch();
