@@ -25,7 +25,7 @@ try{
             LibHub VARCHAR(50) character set utf8,
             DescHub VARCHAR(500) character set utf8,
             IdUser INT NOT NULL,
-            FOREIGN KEY (IdUser) REFERENCES User(IdUser)
+            FOREIGN KEY (IdUser) REFERENCES Users(IdUser)
         );
         
         CREATE TABLE IF NOT EXISTS `Cards`(
@@ -35,7 +35,7 @@ try{
             url VARCHAR(500) character set utf8 NULL,
             imageUrl VARCHAR(500) character set utf8 NOT NULL,
             IdHub INT NOT NULL,
-            FOREIGN KEY (IdHub) REFERENCES Hub(IdHub)
+            FOREIGN KEY (IdHub) REFERENCES Hubs(IdHub)
         );
     ");
     $dbh = null;

@@ -1,8 +1,8 @@
 {
     "bdd":{
-        "host":"localhost",
-        "database":"sharehub",
-        "user":"root",
-        "password":""
+        "host":"nsshxpbsharehub.mysql.db",
+        "database":"nsshxpbsharehub",
+        "user":"nsshxpbsharehub",
+        "password":"aLgCrgG9UJDit3Q"
     }
 }
