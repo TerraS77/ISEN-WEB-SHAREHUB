@@ -17,3 +17,19 @@ function spawnModal(isCreate, id, name, URL, mediaURL){
         modal.querySelector("#modal-media").value = mediaURL;
     }
 }
+
+function verif_NH() {
+    hubTitle = document.getElementById('hubTitle');
+    hubDescription = document.getElementById('hubDescription');
+    return hubTitle.value != "" && hubDescription.value != "";
+}
+
+function submitFormNH() {
+    if(verif_NH())
+        return true;
+    else {
+        document.getElementById("errorsSpanNH").innerHTML = `<div class="alert alert-danger" role="alert"> You need to put a title and a description. </div>`;
+        return false;
+    }
+}
+

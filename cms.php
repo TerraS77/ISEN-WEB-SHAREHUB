@@ -108,11 +108,11 @@ if ($hub) { ?>
                 <span id="errorsSpanNH"></span>
                 <div class="form-outline mb-4 ">
                     <label for="exampleFormControlInput1" class="form-label">Title</label>
-                    <input type="text" class="form-control" name="hubTitle" id="hubTitle">
+                    <input type="text" class="form-control" name="hubTitle" id="hubTitle"></input>
                 </div>
                 <div class="form-outline mb-4">
                     <label for="exampleFormControlInput1" class="form-label">Description</label>
-                    <input type="text" class="form-control" name="hubDescription" id="hubDescription">
+                    <input type="text" class="form-control" name="hubDescription" id="hubDescription"></input>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
                     <input type="submit" class="btn btn-primary" id="creatbutt" value="create"></input>
@@ -131,27 +131,5 @@ if ($hub) { ?>
     }
 }
 ?>
-<script>
-
-function submitFormNH() {
-    
-       
-        form = document.getElementById("formNH");
-        
-                    if (verif_NH== 'true') {
-                        form.submit();
-                    }else document.getElementById("errorsSpanSG").innerHTML = `<div class="alert alert-danger" role="alert"> fill the title and the description </div>`; //ERROR   
-}
-
-function verif_NH() {
-    let passTab = [];
-    passTab.push(document.getElementById('hubTitle'));
-    passTab.push(document.getElementById('hubDescription'));
-    if (passTab[0].value == passTab[1].value && passTab[0].value == "") { // champs vides
-        return false;
-    } else return true;
-}
-
-</script>
 
 </html>
